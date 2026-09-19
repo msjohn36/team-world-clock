@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Team World Clock</title>
+  <title>Team Time Zones</title>
 
   <style>
     * {
@@ -13,90 +13,136 @@
 
     body {
       margin: 0;
-      padding: 18px;
-      background: #ffffff;
+      padding: 8px;
+      background: transparent;
       color: #37352f;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                    Helvetica, Arial, sans-serif;
     }
 
-    .container {
-      max-width: 850px;
+    .clock-container {
+      width: 100%;
+      max-width: 650px;
       margin: 0 auto;
     }
 
-    h1 {
-      font-size: 28px;
-      margin: 0 0 6px;
-    }
-
-    .subtitle {
-      color: #787774;
-      font-size: 14px;
-      margin-bottom: 18px;
-    }
-
     .clock-card {
-      border: 1px solid #e5e5e5;
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 12px;
-      background: #ffffff;
-    }
-
-    .top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
+
+      min-height: 78px;
+      margin-bottom: 7px;
+      padding: 10px 14px;
+
+      background: #ffffff;
+      border: 1px solid #e4e4e4;
+      border-radius: 10px;
     }
 
-    .location {
-      font-size: 17px;
+    .clock-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .zone-name {
+      font-size: 16px;
       font-weight: 650;
+      line-height: 1.2;
+      margin-bottom: 4px;
     }
 
-    .zone {
+    .members {
       color: #787774;
-      font-size: 13px;
-      margin-top: 3px;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .clock-time {
+      text-align: right;
+      flex-shrink: 0;
     }
 
     .time {
-      font-size: 34px;
-      font-weight: 700;
+      font-size: 24px;
+      font-weight: 650;
+      line-height: 1.1;
       white-space: nowrap;
     }
 
     .date {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid #eeeeee;
       color: #787774;
-      font-size: 13px;
-    }
-
-    .members {
+      font-size: 11px;
       margin-top: 5px;
-      color: #9b9a97;
-      font-size: 12px;
+      white-space: nowrap;
     }
 
-    @media (max-width: 500px) {
+    /* Arizona reference clock */
+    .arizona {
+      border-left: 4px solid #e9b44c;
+    }
+
+    /* Other time zones */
+    .pacific {
+      border-left: 4px solid #e57373;
+    }
+
+    .mountain {
+      border-left: 4px solid #81c784;
+    }
+
+    .central {
+      border-left: 4px solid #64b5f6;
+    }
+
+    .eastern {
+      border-left: 4px solid #9575cd;
+    }
+
+    .egypt {
+      border-left: 4px solid #4db6ac;
+    }
+
+    .arabia {
+      border-left: 4px solid #f06292;
+    }
+
+    @media (prefers-color-scheme: dark) {
       body {
-        padding: 10px;
+        color: #f1f1ef;
       }
 
       .clock-card {
-        padding: 14px;
+        background: #191919;
+        border-color: #373737;
+      }
+
+      .members,
+      .date {
+        color: #b4b4b0;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .clock-card {
+        padding: 9px 10px;
+      }
+
+      .zone-name {
+        font-size: 14px;
+      }
+
+      .members {
+        font-size: 10px;
       }
 
       .time {
-        font-size: 27px;
+        font-size: 20px;
       }
 
-      .location {
-        font-size: 15px;
+      .date {
+        font-size: 10px;
       }
     }
   </style>
@@ -104,164 +150,155 @@
 
 <body>
 
-<div class="container">
+  <div class="clock-container" id="clocks"></div>
 
-  <h1>Team World Clock</h1>
+  <script>
 
-  <div class="subtitle">
-    Current local time for our team
-  </div>
+    const locations = [
 
-  <div id="clocks"></div>
+      {
+        name: "Arizona Time (MST)",
+        zone: "America/Phoenix",
+        members: "ASU Time",
+        className: "arizona"
+      },
 
-</div>
+      {
+        name: "Pacific Time (PT)",
+        zone: "America/Los_Angeles",
+        members: "Mariella Ballard • Kevin Brindle",
+        className: "pacific"
+      },
 
+      {
+        name: "Mountain Time (MT)",
+        zone: "America/Denver",
+        members: "Mindy Johnston",
+        className: "mountain"
+      },
 
-<script>
+      {
+        name: "Central Time (CT)",
+        zone: "America/Chicago",
+        members: "Nicholas Vansandt • Brianna Beasley",
+        className: "central"
+      },
 
-const locations = [
+      {
+        name: "Eastern Time (ET)",
+        zone: "America/New_York",
+        members: "Alo Cazares Rojas • Jacob Chelsey • Kyle Kostner • Rebecca Ng",
+        className: "eastern"
+      },
 
-  {
-    city: "Los Angeles",
-    label: "Pacific Time",
-    zone: "America/Los_Angeles",
-    members: "Mariella • Kevin"
-  },
+      {
+        name: "Egypt Time",
+        zone: "Africa/Cairo",
+        members: "Mahmoud Mostafa",
+        className: "egypt"
+      },
 
-  {
-    city: "Denver",
-    label: "Mountain Time",
-    zone: "America/Denver",
-    members: "Mindy"
-  },
+      {
+        name: "Arabia Time (AST)",
+        zone: "Asia/Riyadh",
+        members: "Shahd Diab",
+        className: "arabia"
+      }
 
-  {
-    city: "Chicago",
-    label: "Central Time",
-    zone: "America/Chicago",
-    members: "Nicholas • Brianna"
-  },
-
-  {
-    city: "New York",
-    label: "Eastern Time",
-    zone: "America/New_York",
-    members: "Alo • Jacob • Kyle • Rebecca"
-  },
-
-  {
-    city: "Cairo",
-    label: "Egypt Time",
-    zone: "Africa/Cairo",
-    members: "Mahmoud"
-  },
-
-  {
-    city: "Riyadh",
-    label: "Arabia Time",
-    zone: "Asia/Riyadh",
-    members: "Shahd"
-  }
-
-];
+    ];
 
 
-function createClocks() {
+    function createClocks() {
 
-  const container = document.getElementById("clocks");
+      const container = document.getElementById("clocks");
 
-  container.innerHTML = locations.map((location, index) => `
+      container.innerHTML = locations.map((location, index) => `
 
-    <div class="clock-card">
+        <div class="clock-card ${location.className}">
 
-      <div class="top-row">
+          <div class="clock-info">
 
-        <div>
+            <div class="zone-name">
+              ${location.name}
+            </div>
 
-          <div class="location">
-            ${location.city}
+            <div class="members">
+              ${location.members}
+            </div>
+
           </div>
 
-          <div class="zone">
-            ${location.label}
-          </div>
+          <div class="clock-time">
 
-          <div class="members">
-            ${location.members}
+            <div
+              class="time"
+              id="time-${index}">
+            </div>
+
+            <div
+              class="date"
+              id="date-${index}">
+            </div>
+
           </div>
 
         </div>
 
-        <div
-          class="time"
-          id="time-${index}">
-        </div>
+      `).join("");
 
-      </div>
-
-      <div
-        class="date"
-        id="date-${index}">
-      </div>
-
-    </div>
-
-  `).join("");
-
-}
+    }
 
 
-function updateClocks() {
+    function updateClocks() {
 
-  const now = new Date();
+      const now = new Date();
 
-  locations.forEach((location, index) => {
+      locations.forEach((location, index) => {
 
-    const time = new Intl.DateTimeFormat(
-      "en-US",
-      {
-        timeZone: location.zone,
-        hour: "numeric",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true
-      }
-    ).format(now);
-
-
-    const date = new Intl.DateTimeFormat(
-      "en-US",
-      {
-        timeZone: location.zone,
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      }
-    ).format(now);
+        const time = new Intl.DateTimeFormat(
+          "en-US",
+          {
+            timeZone: location.zone,
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+          }
+        ).format(now);
 
 
-    document.getElementById(
-      `time-${index}`
-    ).textContent = time;
+        const date = new Intl.DateTimeFormat(
+          "en-US",
+          {
+            timeZone: location.zone,
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+          }
+        ).format(now);
 
 
-    document.getElementById(
-      `date-${index}`
-    ).textContent = date;
-
-  });
-
-}
+        document.getElementById(
+          `time-${index}`
+        ).textContent = time;
 
 
-createClocks();
+        document.getElementById(
+          `date-${index}`
+        ).textContent = date;
 
-updateClocks();
+      });
 
-setInterval(updateClocks, 1000);
+    }
 
-</script>
+
+    createClocks();
+    updateClocks();
+
+    /* Seconds aren't displayed, so updating once per minute is enough */
+    setInterval(updateClocks, 60000);
+
+  </script>
 
 </body>
 </html>
