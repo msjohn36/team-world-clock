@@ -8,7 +8,6 @@
   <title>Team Time Zones</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -17,10 +16,7 @@
     body {
       margin: 0;
       padding: 0;
-
-      /* No widget background */
-      background: transparent;
-
+      background: #191919;
       color: #f1f1ef;
 
       font-family:
@@ -34,23 +30,20 @@
       overflow: hidden;
     }
 
-
     body {
-      padding: 2px;
+      padding: 3px;
     }
-
 
     .clock-container {
       width: 100%;
       margin: 0;
       padding: 0;
-      background: transparent;
+      background: #191919;
     }
 
-
-    /* ==========================
-       CLOCK ROW
-       ========================== */
+    /* =========================
+       CLOCK CARDS
+       ========================= */
 
     .clock-card {
       position: relative;
@@ -62,30 +55,27 @@
       width: 100%;
       height: 46px;
 
-      margin: 0 0 3px 0;
+      margin-bottom: 4px;
 
       padding:
         5px
         12px
         5px
-        15px;
+        17px;
 
-      /* No card background */
-      background: transparent;
+      background: #202020;
 
       border: 1px solid #373737;
       border-radius: 7px;
     }
 
-
     .clock-card:last-child {
       margin-bottom: 0;
     }
 
-
-    /* ==========================
-       COLORED BAR
-       ========================== */
+    /* =========================
+       COLORED LEFT BAR
+       ========================= */
 
     .clock-card::before {
       content: "";
@@ -96,21 +86,20 @@
       top: 4px;
       bottom: 4px;
 
-      width: 4px;
+      width: 5px;
 
       border-radius:
         0
-        3px
-        3px
+        4px
+        4px
         0;
 
       background: var(--accent);
     }
 
-
-    /* ==========================
+    /* =========================
        LEFT SIDE
-       ========================== */
+       ========================= */
 
     .clock-info {
       flex: 1;
@@ -118,20 +107,18 @@
       padding-right: 8px;
     }
 
-
     .zone-name {
-      margin: 0 0 2px 0;
+      margin: 0 0 3px 0;
 
       color: #f1f1ef;
 
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 700;
 
-      line-height: 1.05;
+      line-height: 1;
 
       white-space: nowrap;
     }
-
 
     .members {
       color: #a9a9a6;
@@ -141,21 +128,18 @@
       line-height: 1;
 
       white-space: nowrap;
-
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-
-    /* ==========================
+    /* =========================
        RIGHT SIDE
-       ========================== */
+       ========================= */
 
     .clock-time {
       flex-shrink: 0;
       text-align: right;
     }
-
 
     .time {
       color: #ffffff;
@@ -168,9 +152,8 @@
       white-space: nowrap;
     }
 
-
     .date {
-      margin-top: 3px;
+      margin-top: 4px;
 
       color: #a9a9a6;
 
@@ -181,12 +164,11 @@
       white-space: nowrap;
     }
 
-
-    /* ==========================
+    /* =========================
        COLORS
-       ========================== */
+       ========================= */
 
-    /* ASU Maroon */
+    /* ASU MAROON */
     .arizona {
       --accent: #8C1D40;
     }
@@ -215,47 +197,53 @@
       --accent: #f44f83;
     }
 
-
-    /* ==========================
-       EXTRA-NARROW NOTION COLUMN
-       ========================== */
+    /* =========================
+       SMALLER NOTION EMBEDS
+       ========================= */
 
     @media (max-width: 450px) {
 
+      body {
+        padding: 2px;
+      }
+
       .clock-card {
-        height: 44px;
+        height: 43px;
+
+        margin-bottom: 3px;
 
         padding:
           4px
           8px
           4px
-          13px;
+          14px;
       }
 
+      .clock-card::before {
+        width: 4px;
+
+        top: 4px;
+        bottom: 4px;
+      }
 
       .zone-name {
         font-size: 12px;
       }
 
-
       .members {
         font-size: 8px;
       }
-
 
       .time {
         font-size: 16px;
       }
 
-
       .date {
         font-size: 7px;
+        margin-top: 3px;
       }
-
     }
-
   </style>
-
 </head>
 
 
@@ -302,7 +290,8 @@
       {
         name: "Eastern Time (ET)",
         zone: "America/New_York",
-        members: "Alo Cazares Rojas • Jacob Chelsey • Kyle Kostner • Rebecca Ng",
+        members:
+          "Alo Cazares Rojas • Jacob Chelsey • Kyle Kostner • Rebecca Ng",
         className: "eastern"
       },
 
@@ -332,7 +321,8 @@
       container.innerHTML =
         locations.map((location, index) => `
 
-          <div class="clock-card ${location.className}">
+          <div
+            class="clock-card ${location.className}">
 
             <div class="clock-info">
 
@@ -375,7 +365,6 @@
 
       locations.forEach((location, index) => {
 
-
         /* TIME */
 
         const time =
@@ -383,23 +372,20 @@
             "en-US",
             {
               timeZone: location.zone,
-
               hour: "numeric",
               minute: "2-digit",
-
               hour12: true
             }
           ).format(now);
 
 
-        /* SHORT DATE */
+        /* DATE */
 
         const date =
           new Intl.DateTimeFormat(
             "en-US",
             {
               timeZone: location.zone,
-
               weekday: "short",
               month: "short",
               day: "numeric"
@@ -426,7 +412,7 @@
     updateClocks();
 
 
-    /* Update every minute */
+    /* Refresh once per minute */
 
     setInterval(
       updateClocks,
