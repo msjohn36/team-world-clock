@@ -1,335 +1,649 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Team Time Zones</title>
+  <meta charset="UTF-8">
 
-<style>
-  * {
-    box-sizing: border-box;
-  }
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    background: #191919;
-    color: #f1f1ef;
-    font-family:
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      Helvetica,
-      Arial,
-      sans-serif;
-    overflow: hidden;
-  }
+  <!-- Tell browsers/embeds this page is designed for dark mode -->
+  <meta
+    name="color-scheme"
+    content="dark">
 
-  body {
-    padding: 2px;
-  }
+  <title>Team Time Zones</title>
 
-  .clock-container {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    background: #191919;
-  }
 
-  .clock-card {
-    --accent: #888;
+  <style>
 
-    position: relative;
+    /* =========================================
+       GLOBAL
+       ========================================= */
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    * {
+      box-sizing: border-box;
+    }
 
-    width: 100%;
-    height: 42px;
 
-    margin-bottom: 3px;
+    html {
+      margin: 0;
+      padding: 0;
 
-    padding: 5px 10px 5px 15px;
+      color-scheme: dark;
 
-    /* Notion-style dark */
-    background: #202020;
+      background-color: #191919 !important;
+    }
 
-    border: 1px solid #333333;
-    border-radius: 6px;
-  }
 
-  .clock-card:last-child {
-    margin-bottom: 0;
-  }
+    body {
+      margin: 0;
+      padding: 2px;
 
-  /* Colored indicator */
+      background-color: #191919 !important;
 
-  .clock-card::before {
-    content: "";
+      color: #f1f1ef;
 
-    position: absolute;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Helvetica,
+        Arial,
+        sans-serif;
 
-    left: 0;
-    top: 4px;
-    bottom: 4px;
+      overflow: hidden;
+    }
 
-    width: 4px;
 
-    background: var(--accent);
+    /* =========================================
+       CONTAINER
+       ========================================= */
 
-    border-radius: 0 3px 3px 0;
-  }
+    .clock-container {
 
-  /* LEFT */
+      width: 100%;
 
-  .clock-info {
-    flex: 1;
-    min-width: 0;
-    padding-right: 8px;
-  }
+      margin: 0;
+      padding: 0;
 
-  .zone-name {
-    margin: 0 0 3px 0;
+      background-color: #191919 !important;
 
-    color: #f1f1ef;
+    }
 
-    font-size: 12px;
-    font-weight: 600;
 
-    line-height: 1;
+    /* =========================================
+       CLOCK CARDS
+       ========================================= */
 
-    white-space: nowrap;
-  }
+    .clock-card {
 
-  .members {
-    color: #9b9a97;
+      --accent: #888888;
 
-    font-size: 8px;
-    line-height: 1;
+      position: relative;
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+      display: flex;
 
-  /* RIGHT */
+      align-items: center;
+      justify-content: space-between;
 
-  .clock-time {
-    flex-shrink: 0;
-    text-align: right;
-  }
+      width: 100%;
 
-  .time {
-    color: #f1f1ef;
+      height: 42px;
 
-    font-size: 16px;
-    font-weight: 600;
+      margin: 0 0 3px 0;
 
-    line-height: 1;
+      padding:
+        5px
+        10px
+        5px
+        15px;
 
-    white-space: nowrap;
-  }
+      /*
+        Slightly lighter than the Notion
+        dark page background.
+      */
 
-  .date {
-    margin-top: 3px;
+      background-color: #202020 !important;
 
-    color: #9b9a97;
+      border:
+        1px solid
+        #333333;
 
-    font-size: 7px;
-    line-height: 1;
+      border-radius: 6px;
 
-    white-space: nowrap;
-  }
+    }
 
-  /* COLORS */
 
-  .arizona {
-    --accent: #8C1D40;
-  }
+    .clock-card:last-child {
+      margin-bottom: 0;
+    }
 
-  .pacific {
-    --accent: #e2555f;
-  }
 
-  .mountain {
-    --accent: #6fbf55;
-  }
+    /* =========================================
+       COLORED LEFT BAR
+       ========================================= */
 
-  .central {
-    --accent: #4b9bd8;
-  }
+    .clock-card::before {
 
-  .eastern {
-    --accent: #8f6bd1;
-  }
+      content: "";
 
-  .egypt {
-    --accent: #45aaa8;
-  }
+      position: absolute;
 
-  .arabia {
-    --accent: #d9537d;
-  }
+      left: 0;
 
-</style>
+      top: 4px;
+      bottom: 4px;
+
+      width: 4px;
+
+      background-color:
+        var(--accent);
+
+      border-radius:
+        0
+        3px
+        3px
+        0;
+
+    }
+
+
+    /* =========================================
+       LEFT SIDE
+       ========================================= */
+
+    .clock-info {
+
+      flex: 1;
+
+      min-width: 0;
+
+      padding-right: 8px;
+
+    }
+
+
+    .zone-name {
+
+      margin:
+        0
+        0
+        3px
+        0;
+
+      color: #f1f1ef;
+
+      font-size: 12px;
+
+      font-weight: 600;
+
+      line-height: 1;
+
+      white-space: nowrap;
+
+    }
+
+
+    .members {
+
+      color: #9b9a97;
+
+      font-size: 8px;
+
+      line-height: 1;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+    }
+
+
+    /* =========================================
+       RIGHT SIDE
+       ========================================= */
+
+    .clock-time {
+
+      flex-shrink: 0;
+
+      text-align: right;
+
+    }
+
+
+    .time {
+
+      color: #f1f1ef;
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+      line-height: 1;
+
+      white-space: nowrap;
+
+    }
+
+
+    .date {
+
+      margin-top: 3px;
+
+      color: #9b9a97;
+
+      font-size: 7px;
+
+      line-height: 1;
+
+      white-space: nowrap;
+
+    }
+
+
+    /* =========================================
+       TIME ZONE COLORS
+       ========================================= */
+
+
+    /* Arizona / ASU Maroon */
+
+    .arizona {
+      --accent: #8C1D40;
+    }
+
+
+    /* Pacific */
+
+    .pacific {
+      --accent: #e2555f;
+    }
+
+
+    /* Mountain */
+
+    .mountain {
+      --accent: #6fbf55;
+    }
+
+
+    /* Central */
+
+    .central {
+      --accent: #4b9bd8;
+    }
+
+
+    /* Eastern */
+
+    .eastern {
+      --accent: #8f6bd1;
+    }
+
+
+    /* Egypt */
+
+    .egypt {
+      --accent: #45aaa8;
+    }
+
+
+    /* Arabia */
+
+    .arabia {
+      --accent: #d9537d;
+    }
+
+
+  </style>
+
 </head>
+
 
 <body>
 
-<div class="clock-container" id="clocks"></div>
 
-<script>
-
-const locations = [
-
-  {
-    name: "Arizona Time (MST)",
-    zone: "America/Phoenix",
-    members: "ASU Time",
-    className: "arizona"
-  },
-
-  {
-    name: "Pacific Time (PT)",
-    zone: "America/Los_Angeles",
-    members: "Mariella Ballard • Kevin Brindle",
-    className: "pacific"
-  },
-
-  {
-    name: "Mountain Time (MT)",
-    zone: "America/Denver",
-    members: "Mindy Johnston",
-    className: "mountain"
-  },
-
-  {
-    name: "Central Time (CT)",
-    zone: "America/Chicago",
-    members: "Nicholas Vansandt • Brianna Beasley",
-    className: "central"
-  },
-
-  {
-    name: "Eastern Time (ET)",
-    zone: "America/New_York",
-    members: "Alo Cazares Rojas • Jacob Chelsey • Kyle Kostner • Rebecca Ng",
-    className: "eastern"
-  },
-
-  {
-    name: "Egypt Time",
-    zone: "Africa/Cairo",
-    members: "Mahmoud Mostafa",
-    className: "egypt"
-  },
-
-  {
-    name: "Arabia Time (AST)",
-    zone: "Asia/Riyadh",
-    members: "Shahd Diab",
-    className: "arabia"
-  }
-
-];
+  <div
+    class="clock-container"
+    id="clocks">
+  </div>
 
 
-function createClocks() {
-
-  const container =
-    document.getElementById("clocks");
-
-  container.innerHTML =
-    locations.map((location, index) => `
-
-      <div class="clock-card ${location.className}">
-
-        <div class="clock-info">
-
-          <div class="zone-name">
-            ${location.name}
-          </div>
-
-          <div class="members">
-            ${location.members}
-          </div>
-
-        </div>
-
-        <div class="clock-time">
-
-          <div
-            class="time"
-            id="time-${index}">
-          </div>
-
-          <div
-            class="date"
-            id="date-${index}">
-          </div>
-
-        </div>
-
-      </div>
-
-    `).join("");
-
-}
+  <script>
 
 
-function updateClocks() {
+    /* =========================================
+       TEAM TIME ZONES
+       ========================================= */
 
-  const now = new Date();
 
-  locations.forEach((location, index) => {
+    const locations = [
 
-    const time =
-      new Intl.DateTimeFormat(
-        "en-US",
-        {
-          timeZone: location.zone,
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true
+
+      {
+        name:
+          "Arizona Time (MST)",
+
+        zone:
+          "America/Phoenix",
+
+        members:
+          "ASU Time",
+
+        className:
+          "arizona"
+      },
+
+
+      {
+        name:
+          "Pacific Time (PT)",
+
+        zone:
+          "America/Los_Angeles",
+
+        members:
+          "Mariella Ballard • Kevin Brindle",
+
+        className:
+          "pacific"
+      },
+
+
+      {
+        name:
+          "Mountain Time (MT)",
+
+        zone:
+          "America/Denver",
+
+        members:
+          "Mindy Johnston",
+
+        className:
+          "mountain"
+      },
+
+
+      {
+        name:
+          "Central Time (CT)",
+
+        zone:
+          "America/Chicago",
+
+        members:
+          "Nicholas Vansandt • Brianna Beasley",
+
+        className:
+          "central"
+      },
+
+
+      {
+        name:
+          "Eastern Time (ET)",
+
+        zone:
+          "America/New_York",
+
+        members:
+          "Alo Cazares Rojas • Jacob Chelsey • Kyle Kostner • Rebecca Ng",
+
+        className:
+          "eastern"
+      },
+
+
+      {
+        name:
+          "Egypt Time",
+
+        zone:
+          "Africa/Cairo",
+
+        members:
+          "Mahmoud Mostafa",
+
+        className:
+          "egypt"
+      },
+
+
+      {
+        name:
+          "Arabia Time (AST)",
+
+        zone:
+          "Asia/Riyadh",
+
+        members:
+          "Shahd Diab",
+
+        className:
+          "arabia"
+      }
+
+
+    ];
+
+
+
+    /* =========================================
+       BUILD CLOCKS
+       ========================================= */
+
+
+    function createClocks() {
+
+
+      const container =
+        document.getElementById(
+          "clocks"
+        );
+
+
+      container.innerHTML =
+
+        locations.map(
+
+          (location, index) => `
+
+
+            <div
+              class="clock-card ${location.className}">
+
+
+              <div
+                class="clock-info">
+
+
+                <div
+                  class="zone-name">
+
+                  ${location.name}
+
+                </div>
+
+
+                <div
+                  class="members">
+
+                  ${location.members}
+
+                </div>
+
+
+              </div>
+
+
+
+              <div
+                class="clock-time">
+
+
+                <div
+                  class="time"
+                  id="time-${index}">
+                </div>
+
+
+                <div
+                  class="date"
+                  id="date-${index}">
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          `
+
+        ).join("");
+
+
+    }
+
+
+
+    /* =========================================
+       UPDATE CLOCKS
+       ========================================= */
+
+
+    function updateClocks() {
+
+
+      const now =
+        new Date();
+
+
+
+      locations.forEach(
+
+        (location, index) => {
+
+
+          /* TIME */
+
+          const time =
+
+            new Intl.DateTimeFormat(
+
+              "en-US",
+
+              {
+
+                timeZone:
+                  location.zone,
+
+                hour:
+                  "numeric",
+
+                minute:
+                  "2-digit",
+
+                hour12:
+                  true
+
+              }
+
+            ).format(now);
+
+
+
+          /* DATE */
+
+          const date =
+
+            new Intl.DateTimeFormat(
+
+              "en-US",
+
+              {
+
+                timeZone:
+                  location.zone,
+
+                weekday:
+                  "short",
+
+                month:
+                  "short",
+
+                day:
+                  "numeric"
+
+              }
+
+            ).format(now);
+
+
+
+          document
+            .getElementById(
+              `time-${index}`
+            )
+            .textContent =
+              time;
+
+
+
+          document
+            .getElementById(
+              `date-${index}`
+            )
+            .textContent =
+              date;
+
+
         }
-      ).format(now);
+
+      );
 
 
-    const date =
-      new Intl.DateTimeFormat(
-        "en-US",
-        {
-          timeZone: location.zone,
-          weekday: "short",
-          month: "short",
-          day: "numeric"
-        }
-      ).format(now);
+    }
 
 
-    document
-      .getElementById(`time-${index}`)
-      .textContent = time;
+
+    /* =========================================
+       START
+       ========================================= */
 
 
-    document
-      .getElementById(`date-${index}`)
-      .textContent = date;
-
-  });
-
-}
+    createClocks();
 
 
-createClocks();
-updateClocks();
+    updateClocks();
 
-setInterval(updateClocks, 60000);
 
-</script>
+
+    /*
+      We aren't showing seconds,
+      so update once every minute.
+    */
+
+    setInterval(
+
+      updateClocks,
+
+      60000
+
+    );
+
+
+  </script>
+
 
 </body>
+
 </html>
